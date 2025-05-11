@@ -1,0 +1,98 @@
+---
+const navItems = [
+  { name: "Clases", href: "#clases" },
+  { name: "Horarios", href: "#horarios" },
+  { name: "Comunidad", href: "#comunidad" },
+  { name: "Contacto", href: "#contacto" },
+];
+---
+
+<header class="fixed w-full z-50 transition-all duration-300" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a href="#" class="flex items-center">
+          <img 
+            src="/logo2w.png" 
+            alt="Logo del gimnasio" 
+            class="h-12 sm:h-16 w-auto"
+          />
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-12">
+        {navItems.map(item => (
+          <a 
+            href={item.href} 
+            class="text-white hover:text-yellow-400 tracking-wider text-xl font-anton transition-colors duration-200"
+          >
+            {item.name}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button 
+          type="button" 
+          class="text-white" 
+          id="mobile-menu-button"
+          aria-label="Abrir menú"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="md:hidden hidden bg-black/95 w-full" id="mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {navItems.map(item => (
+        <a 
+          href={item.href} 
+          class="block px-3 py-2 text-white hover:text-yellow-400 font-anton text-xl tracking-wider"
+        >
+          {item.name}
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close menu when clicking on a link
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+  }
+
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('bg-black/80', 'backdrop-blur-sm');
+      } else {
+        navbar.classList.remove('bg-black/80', 'backdrop-blur-sm');
+      }
+    });
+  }
+</script>

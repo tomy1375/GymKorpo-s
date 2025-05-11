@@ -1,0 +1,54 @@
+---
+const classes = [
+  {
+    title: "Zumba",
+    description: "Quema calorías mientras te diviertes con nuestras energéticas clases de Zumba. Perfectas para todos los niveles.",
+    image: "/images/zumba-class.png"
+  },
+  {
+    title: "Entrenamiento con Pesas",
+    description: "Desarrolla fuerza y tonifica tu cuerpo con nuestro equipamiento de última generación y la guía de entrenadores expertos.",
+    image: "/images/weights-training.png"
+  },
+  {
+    title: "Spinning",
+    description: "Pedalea al ritmo de la música en nuestras clases de spinning de alta intensidad para mejorar tu resistencia cardiovascular.",
+    image: "/images/spinning-class.png"
+  }
+];
+---
+
+<section id="clases" class="py-20 bg-zinc-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-4">NUESTRAS CLASES</h2>
+      <p class="text-xl text-gray-300 max-w-3xl mx-auto font-lato font-light">
+        Ofrecemos una variedad de clases diseñadas para ayudarte a alcanzar tus objetivos fitness, sin importar tu nivel de experiencia.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {classes.map(item => (
+        <div class="bg-zinc-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
+          <div class="h-64 overflow-hidden">
+            <img 
+              src={item.image || "/placeholder.svg"} 
+              alt={`Clase de ${item.title}`} 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-anton text-white mb-3">{item.title}</h3>
+            <p class="text-gray-300 font-lato normal-case">{item.description}</p>
+            <a 
+              href="#horarios" 
+              class="mt-4 inline-block text-yellow-400 font-medium hover:text-yellow-300"
+            >
+              Ver horarios →
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

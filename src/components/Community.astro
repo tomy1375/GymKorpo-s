@@ -1,0 +1,112 @@
+---
+const testimonials = [
+  {
+    name: "María García",
+    text: "Desde que me uní a GYM BOX, he notado un cambio increíble en mi salud y energía. Las clases de Zumba son mi favoritas, ¡Laura es una instructora increíble!",
+    image: "/images/testimonial-1.jpg",
+    rating: 5
+  },
+  {
+    name: "Juan Pérez",
+    text: "El ambiente en GYM BOX es inmejorable. He probado muchos gimnasios, pero ninguno tiene esta combinación de equipamiento de calidad y entrenadores profesionales.",
+    image: "/images/testimonial-2.png",
+    rating: 5
+  },
+  {
+    name: "Ana Martínez",
+    text: "Las clases de spinning me han ayudado a mejorar mi resistencia cardiovascular. Carlos sabe cómo motivarte para dar lo mejor de ti en cada sesión.",
+    image: "/images/testimonial-3.png",
+    rating: 4
+  }
+];
+
+const instagramPosts = [
+  "/images/instagram-1.png",
+  "/images/instagram-2.png",
+  "/images/instagram-3.png",
+  "/images/instagram-4.png",
+  "/images/instagram-5.png",
+  "/images/instagram-6.png"
+];
+---
+
+<section id="comunidad" class="py-20 bg-zinc-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-4">NUESTRA COMUNIDAD</h2>
+      <p class="text-xl text-gray-300 max-w-3xl mx-auto font-lato font-light normal-case">
+        En GYM BOX no solo entrenamos juntos, somos una familia. Conoce a nuestros miembros y únete a nuestra comunidad fitness.
+      </p>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="mb-20">
+      <h3 class="text-2xl font-anton text-white mb-8 text-center">Lo que dicen nuestros miembros</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {testimonials.map(testimonial => (
+          <div class="bg-zinc-800 p-6 rounded-lg shadow-lg">
+            <div class="flex items-center mb-4">
+              <img 
+                src={testimonial.image || "/placeholder.svg"} 
+                alt={testimonial.name} 
+                class="w-12 h-12 rounded-full object-cover mr-4"
+              />
+              <div>
+                <h4 class="text-white font-medium font-anton">{testimonial.name}</h4>
+                <div class="flex text-yellow-400">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      class={`h-4 w-4 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-600'}`} 
+                      viewBox="0 0 20 20" 
+                      fill="currentColor"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-300 font-lato normal-case">{testimonial.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Instagram Feed -->
+    <div>
+      <h3 class="text-2xl font-anton text-white mb-8 text-center">Síguenos en Instagram</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {instagramPosts.map(post => (
+          <a href="#" class="block overflow-hidden rounded-lg group">
+            <div class="relative aspect-square">
+              <img 
+                src={post || "/placeholder.svg"} 
+                alt="Instagram post" 
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a 
+          href="https://instagram.com" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="inline-flex items-center text-yellow-400 hover:text-yellow-300 font-medium font-lato"
+        >
+          Síguenos en Instagram
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

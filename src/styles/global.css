@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffd700;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e6c200;
+}
+
+/* Añadir estilo de texto en mayúsculas para todos los títulos */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "Anton", sans-serif;
+}
+
+/* Clase para usar la tipografía Anton */
+.font-anton {
+  font-family: "Anton", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Clase para usar la tipografía Lato */
+.font-lato {
+  font-family: "Lato", sans-serif;
+}
+
+/* Estilo para botones */
+.btn {
+  @apply font-bold uppercase tracking-wider transition-all duration-300 transform hover:-translate-y-1;
+}

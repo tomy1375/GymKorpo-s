@@ -1,0 +1,192 @@
+---
+const weekdays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+const schedule = [
+  {
+    day: "Lunes",
+    classes: [
+      { time: "07:00 - 08:00", name: "Spinning", trainer: "Carlos" },
+      { time: "09:00 - 10:00", name: "Zumba", trainer: "Laura" },
+      { time: "18:00 - 19:00", name: "Pesas", trainer: "Miguel" },
+      { time: "20:00 - 21:00", name: "Zumba", trainer: "Laura" }
+    ]
+  },
+  {
+    day: "Martes",
+    classes: [
+      { time: "07:00 - 08:00", name: "Pesas", trainer: "Miguel" },
+      { time: "09:00 - 10:00", name: "Spinning", trainer: "Carlos" },
+      { time: "18:00 - 19:00", name: "Zumba", trainer: "Laura" },
+      { time: "20:00 - 21:00", name: "Spinning", trainer: "Carlos" }
+    ]
+  },
+  {
+    day: "Miércoles",
+    classes: [
+      { time: "07:00 - 08:00", name: "Zumba", trainer: "Laura" },
+      { time: "09:00 - 10:00", name: "Pesas", trainer: "Miguel" },
+      { time: "18:00 - 19:00", name: "Spinning", trainer: "Carlos" },
+      { time: "20:00 - 21:00", name: "Pesas", trainer: "Miguel" }
+    ]
+  },
+  {
+    day: "Jueves",
+    classes: [
+      { time: "07:00 - 08:00", name: "Spinning", trainer: "Carlos" },
+      { time: "09:00 - 10:00", name: "Zumba", trainer: "Laura" },
+      { time: "18:00 - 19:00", name: "Pesas", trainer: "Miguel" },
+      { time: "20:00 - 21:00", name: "Zumba", trainer: "Laura" }
+    ]
+  },
+  {
+    day: "Viernes",
+    classes: [
+      { time: "07:00 - 08:00", name: "Pesas", trainer: "Miguel" },
+      { time: "09:00 - 10:00", name: "Spinning", trainer: "Carlos" },
+      { time: "18:00 - 19:00", name: "Zumba", trainer: "Laura" },
+      { time: "20:00 - 21:00", name: "Spinning", trainer: "Carlos" }
+    ]
+  },
+  {
+    day: "Sábado",
+    classes: [
+      { time: "10:00 - 11:00", name: "Zumba", trainer: "Laura" },
+      { time: "12:00 - 13:00", name: "Spinning", trainer: "Carlos" },
+      { time: "16:00 - 17:00", name: "Pesas", trainer: "Miguel" }
+    ]
+  },
+  {
+    day: "Domingo",
+    classes: [
+      { time: "10:00 - 11:00", name: "Spinning", trainer: "Carlos" },
+      { time: "12:00 - 13:00", name: "Zumba", trainer: "Laura" }
+    ]
+  }
+];
+---
+
+<section id="horarios" class="py-20 bg-black">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-4">HORARIOS</h2>
+      <p class="text-xl text-gray-300 max-w-3xl mx-auto font-lato font-light normal-case">
+        Consulta nuestros horarios de clases y planifica tu semana fitness. Ofrecemos flexibilidad para adaptarnos a tu rutina diaria.
+      </p>
+    </div>
+
+    <!-- Desktop Schedule -->
+    <div class="hidden lg:block overflow-x-auto">
+      <div class="min-w-full">
+        <table class="min-w-full bg-zinc-900 rounded-lg overflow-hidden">
+          <thead>
+            <tr>
+              <th class="py-4 px-6 bg-zinc-800 text-left text-sm font-medium text-white uppercase tracking-wider font-anton">
+                Horario
+              </th>
+              {weekdays.map(day => (
+                <th class="py-4 px-6 bg-zinc-800 text-left text-sm font-medium text-white uppercase tracking-wider font-anton">
+                  {day}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-zinc-700 font-lato">
+            {["07:00 - 08:00", "09:00 - 10:00", "10:00 - 11:00", "12:00 - 13:00", "16:00 - 17:00", "18:00 - 19:00", "20:00 - 21:00"].map(timeSlot => (
+              <tr>
+                <td class="py-4 px-6 text-sm font-medium text-white">{timeSlot}</td>
+                {weekdays.map(day => {
+                  const daySchedule = schedule.find(s => s.day === day);
+                  const classInfo = daySchedule?.classes.find(c => c.time === timeSlot);
+                  
+                  return (
+                    <td class="py-4 px-6 text-sm text-gray-300">
+                      {classInfo ? (
+                        <div>
+                          <span class={`font-medium ${
+                            classInfo.name === "Zumba" ? "text-pink-400" : 
+                            classInfo.name === "Spinning" ? "text-blue-400" : 
+                            "text-green-400"
+                          }`}>
+                            {classInfo.name}
+                          </span>
+                          <br />
+                          <span class="text-xs text-gray-400 normal-case">Instructor: {classInfo.trainer}</span>
+                        </div>
+                      ) : ""}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile Schedule (Accordion) -->
+    <div class="lg:hidden space-y-4 font-lato">
+      {schedule.map((daySchedule, index) => (
+        <div class="bg-zinc-900 rounded-lg overflow-hidden">
+          <button 
+            class="w-full px-6 py-4 text-left bg-zinc-800 focus:outline-none font-anton" 
+            id={`day-button-${index}`}
+            aria-expanded="false"
+            aria-controls={`day-content-${index}`}
+          >
+            <span class="text-lg font-medium text-white">{daySchedule.day}</span>
+            <span class="float-right text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </button>
+          <div 
+            id={`day-content-${index}`} 
+            class="hidden px-6 py-4 transition-all duration-200"
+          >
+            {daySchedule.classes.length > 0 ? (
+              <ul class="space-y-3">
+                {daySchedule.classes.map(classInfo => (
+                  <li class="border-b border-zinc-700 pb-2">
+                    <div class="flex justify-between">
+                      <span class="text-white">{classInfo.time}</span>
+                      <span class={`font-medium ${
+                        classInfo.name === "Zumba" ? "text-pink-400" : 
+                        classInfo.name === "Spinning" ? "text-blue-400" : 
+                        "text-green-400"
+                      }`}>
+                        {classInfo.name}
+                      </span>
+                    </div>
+                    <div class="text-sm text-gray-400 normal-case">Instructor: {classInfo.trainer}</div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="text-gray-400 normal-case">No hay clases programadas para este día.</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Mobile accordion functionality
+  document.querySelectorAll('[id^="day-button-"]').forEach((button, index) => {
+    button.addEventListener('click', () => {
+      const content = document.getElementById(`day-content-${index}`);
+      const icon = button.querySelector('svg');
+      
+      if (content && icon) {
+        content.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+        
+        // Update aria-expanded
+        const isExpanded = content.classList.contains('hidden') ? 'false' : 'true';
+        button.setAttribute('aria-expanded', isExpanded);
+      }
+    });
+  });
+</script>
