@@ -31,10 +31,10 @@ const instagramPosts = [
 ---
 
 <section id="comunidad" class="py-20 bg-zinc-900">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-4">NUESTRA COMUNIDAD</h2>
-      <p class="text-xl text-gray-300 max-w-3xl mx-auto font-lato font-light normal-case">
+      <p class="text-xl text-gray-300 max-w-5xl mx-auto font-lato font-light normal-case">
         En GYM BOX no solo entrenamos juntos, somos una familia. Conoce a nuestros miembros y únete a nuestra comunidad fitness.
       </p>
     </div>
@@ -44,7 +44,7 @@ const instagramPosts = [
       <h3 class="text-2xl font-anton text-white mb-8 text-center">Lo que dicen nuestros miembros</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {testimonials.map(testimonial => (
-          <div class="bg-zinc-800 p-6 rounded-lg shadow-lg">
+          <div class="bg-zinc-800 p-4 rounded-lg shadow-lg">
             <div class="flex items-center mb-4">
               <img 
                 src={testimonial.image || "/placeholder.svg"} 
