@@ -16,17 +16,17 @@ const navItems = [
           <img 
             src="/logo2w.png" 
             alt="Logo del gimnasio" 
-            class="h-12 sm:h-16 w-auto"
+            class="h-16 sm:h-16 w-auto lg:mt-2"
           />
         </a>
       </div>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center space-x-10">
+      <nav class="hidden md:flex items-center space-x-10 lg:mt-3">
         {navItems.map(item => (
           <a 
             href={item.href} 
-            class="text-white hover:text-yellow-400 tracking-wider text-lg font-anton transition-colors duration-200"
+            class="text-white hover:text-yellow-400 tracking-wider text-xl font-anton transition-colors duration-200"
           >
             {item.name}
           </a>
