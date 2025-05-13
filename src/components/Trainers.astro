@@ -1,0 +1,255 @@
+---
+// Añadimos más entrenadores para demostrar el carrusel
+const trainers = [
+  {
+    name: "Carlos Mendoza",
+    specialty: "Especialista en Spinning",
+    description: "Con más de 8 años de experiencia, Carlos te llevará al límite en cada clase de spinning para maximizar tu resistencia cardiovascular.",
+    image: "/prof1.jpg",
+    rating: 5
+  },
+  {
+    name: "Laura Sánchez",
+    specialty: "Instructora de Zumba",
+    description: "Certificada internacionalmente, Laura combina ritmos latinos con ejercicios de alta intensidad para que quemes calorías mientras te diviertes.",
+    image: "/prof2.jpg",
+    rating: 5
+  },
+  {
+    name: "Miguel Torres",
+    specialty: "Entrenador de Fuerza",
+    description: "Especialista en entrenamiento con pesas y nutrición deportiva. Miguel te ayudará a desarrollar tu fuerza y definir tu musculatura.",
+    image: "/prof3.jpg",
+    rating: 5
+  },
+  {
+    name: "Ana Gómez",
+    specialty: "Yoga y Pilates",
+    description: "Experta en técnicas de respiración y posturas que te ayudarán a mejorar tu flexibilidad, equilibrio y concentración mental.",
+    image: "/prof4.jpg",
+    rating: 5
+  },
+  {
+    name: "Roberto Díaz",
+    specialty: "Crossfit",
+    description: "Entrenador certificado en CrossFit con experiencia en competiciones nacionales. Te ayudará a superar tus límites en cada WOD.",
+    image: "/prof5.jpg",
+    rating: 5
+  }
+];
+---
+
+<section id="entrenadores" class="py-20 bg-zinc-900">
+  <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-anton text-white mb-2">NUESTROS PROFESIONALES</h2>
+      <h3 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-6">ENTRENADORES</h3>
+      <p class="text-xl text-gray-300 max-w-5xl mx-auto font-lato font-light normal-case">
+        Nuestro equipo de entrenadores certificados está listo para ayudarte a alcanzar tus objetivos fitness, ya sea que quieras perder peso, ganar músculo o mejorar tu condición física general.
+      </p>
+    </div>
+
+    <!-- Carrusel de entrenadores con flechas de navegación -->
+    <div class="relative">
+      <!-- Flecha izquierda -->
+      <button 
+        id="prev-trainer" 
+        class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 md:-ml-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none"
+        aria-label="Entrenador anterior"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <!-- Contenedor del carrusel -->
+      <div class="overflow-hidden" id="trainers-carousel">
+        <div class="flex transition-transform duration-500 ease-in-out" id="trainers-slider">
+          {trainers.map((trainer, index) => (
+            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4 trainer-slide">
+              <div class="bg-black border border-zinc-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 group h-full">
+                <div class="h-96 overflow-hidden relative">
+                  <img 
+                    src={trainer.image || `/placeholder.svg?height=600&width=400&query=fitness trainer ${trainer.name}`} 
+                    alt={`Entrenador ${trainer.name}`} 
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 class="text-3xl font-anton mb-1">{trainer.name}</h3>
+                    <p class="text-yellow-400 font-lato mb-2">{trainer.specialty}</p>
+                    <div class="flex text-yellow-400 mb-3">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <svg 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          class={`h-5 w-5 ${i < trainer.rating ? 'text-yellow-400' : 'text-gray-600'}`} 
+                          viewBox="0 0 20 20" 
+                          fill="currentColor"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div class="p-6 bg-black">
+                  <p class="text-gray-300 font-lato normal-case">{trainer.description}</p>
+                  <a 
+                    href="#contacto" 
+                    class="mt-4 inline-block text-yellow-400 font-medium hover:text-yellow-300 transition-colors duration-200"
+                  >
+                    Reservar clase →
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Flecha derecha -->
+      <button 
+        id="next-trainer" 
+        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 md:-mr-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none"
+        aria-label="Siguiente entrenador"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Indicadores de paginación -->
+    <div class="flex justify-center mt-12 space-x-2" id="trainer-indicators">
+      {trainers.map((_, index) => (
+        <button 
+          class={`w-4 h-4 rounded-full transition-colors duration-200 ${index === 0 ? 'bg-yellow-400' : 'bg-zinc-700 hover:bg-yellow-400/50'}`} 
+          aria-label={`Página ${index + 1}`}
+          data-index={index}
+        ></button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Elementos del carrusel con casting de tipos adecuado
+    const slider = document.getElementById('trainers-slider') as HTMLElement;
+    const prevBtn = document.getElementById('prev-trainer') as HTMLButtonElement;
+    const nextBtn = document.getElementById('next-trainer') as HTMLButtonElement;
+    const indicators = document.querySelectorAll('#trainer-indicators button');
+    const slides = document.querySelectorAll('.trainer-slide');
+    
+    // Verificar que todos los elementos existan
+    if (!slider || !prevBtn || !nextBtn || indicators.length === 0 || slides.length === 0) {
+      console.error('No se encontraron todos los elementos necesarios para el carrusel');
+      return;
+    }
+    
+    let currentIndex = 0;
+    let slidesToShow = 1; // Por defecto en móvil
+    
+    // Determinar cuántos slides mostrar según el ancho de la pantalla
+    function updateSlidesToShow() {
+      if (window.innerWidth >= 1024) {
+        slidesToShow = 3; // Desktop
+      } else if (window.innerWidth >= 768) {
+        slidesToShow = 2; // Tablet
+      } else {
+        slidesToShow = 1; // Móvil
+      }
+      goToSlide(currentIndex); // Actualizar posición
+    }
+    
+    // Actualizar al cargar y al cambiar el tamaño de la ventana
+    updateSlidesToShow();
+    window.addEventListener('resize', updateSlidesToShow);
+    
+    // Función para ir a un slide específico
+    function goToSlide(index: number) {
+      // Asegurarse de que el índice esté dentro de los límites
+      const maxIndex = slides.length - slidesToShow;
+      if (index < 0) index = 0;
+      if (index > maxIndex) index = maxIndex;
+      
+      currentIndex = index;
+      
+      // Calcular el desplazamiento
+      const slideWidth = 100 / slidesToShow;
+      const offset = -index * slideWidth;
+      slider.style.transform = `translateX(${offset}%)`;
+      
+      // Actualizar indicadores
+      indicators.forEach((indicator, i) => {
+        if (i === currentIndex) {
+          indicator.classList.remove('bg-zinc-700', 'hover:bg-yellow-400/50');
+          indicator.classList.add('bg-yellow-400');
+        } else {
+          indicator.classList.remove('bg-yellow-400');
+          indicator.classList.add('bg-zinc-700', 'hover:bg-yellow-400/50');
+        }
+      });
+      
+      // Actualizar estado de los botones (usando setAttribute en lugar de .disabled)
+      if (index === 0) {
+        prevBtn.setAttribute('disabled', 'true');
+        prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        prevBtn.removeAttribute('disabled');
+        prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+      
+      if (index === maxIndex) {
+        nextBtn.setAttribute('disabled', 'true');
+        nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        nextBtn.removeAttribute('disabled');
+        nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+    }
+    
+    // Event listeners para los botones
+    prevBtn.addEventListener('click', () => {
+      goToSlide(currentIndex - 1);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      goToSlide(currentIndex + 1);
+    });
+    
+    // Event listeners para los indicadores
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        goToSlide(index);
+      });
+    });
+    
+    // Inicializar
+    goToSlide(0);
+  });
+</script>
+
+<style>
+  /* Estilos para el carrusel */
+  #trainers-slider {
+    display: flex;
+    width: 100%;
+  }
+  
+  .trainer-slide {
+    flex: 0 0 100%; /* Móvil: 1 slide */
+  }
+  
+  @media (min-width: 768px) {
+    .trainer-slide {
+      flex: 0 0 50%; /* Tablet: 2 slides */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .trainer-slide {
+      flex: 0 0 33.333333%; /* Desktop: 3 slides */
+    }
+  }
+</style>
