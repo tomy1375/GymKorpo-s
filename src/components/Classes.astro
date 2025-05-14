@@ -1,54 +1,275 @@
 ---
+// Definimos las clases basándonos en la información del Schedule
 const classes = [
   {
-    title: "Zumba",
-    description: "Quema calorías mientras te diviertes con nuestras energéticas clases de Zumba. Perfectas para todos los niveles.",
-    image: "/images/zumba-class.png"
+    title: "Musculación",
+    description: "Desarrolla fuerza y tonifica tu cuerpo con nuestro equipamiento de última generación y la guía de entrenadores expertos. Ideal para todos los niveles.",
+    image: "/images/weights-training.png",
+    trainer: "Guillermo Flores / Enrique Montes",
+    schedule: "Lunes a Viernes: 7:30 - 22:00"
   },
   {
-    title: "Entrenamiento con Pesas",
-    description: "Desarrolla fuerza y tonifica tu cuerpo con nuestro equipamiento de última generación y la guía de entrenadores expertos.",
-    image: "/images/weights-training.png"
+    title: "Ritmo/Funcional",
+    description: "Combina movimientos rítmicos con ejercicios funcionales para mejorar tu condición física general mientras te diviertes con música energética.",
+    image: "/images/zumba-class.png",
+    trainer: "Judith Domínguez",
+    schedule: "Lunes, Miércoles y Viernes: 8:00"
   },
   {
-    title: "Spinning",
-    description: "Pedalea al ritmo de la música en nuestras clases de spinning de alta intensidad para mejorar tu resistencia cardiovascular.",
-    image: "/images/spinning-class.png"
+    title: "Fit-dance",
+    description: "Baila y quema calorías con esta divertida clase que combina coreografías de diferentes estilos de baile con ejercicios de tonificación.",
+    image: "/class1.jpg",
+    trainer: "Judith Domínguez",
+    schedule: "Martes y Jueves: 21:00"
+  },
+  {
+    title: "Spinning/Funcional",
+    description: "Pedalea al ritmo de la música en nuestras clases de spinning de alta intensidad combinadas con ejercicios funcionales para un entrenamiento completo.",
+    image: "/images/spinning-class.png",
+    trainer: "Emanuel de la Torre",
+    schedule: "Lunes, Miércoles y Viernes: 20:00 y 21:00"
+  },
+  {
+    title: "Step Coreográfico",
+    description: "Mejora tu coordinación y resistencia cardiovascular con rutinas coreografiadas sobre steps, perfectas para tonificar piernas y glúteos.",
+    image: "/class2.jpg",
+    trainer: "Héctor Andrada",
+    schedule: "Sábados: 16:00"
+  },
+  {
+    title: "X55 (Radical Fitness)",
+    description: "Experimenta este programa de entrenamiento de alta intensidad que combina ejercicios funcionales, aeróbicos y de fuerza en sesiones de 55 minutos.",
+    image: "/class2.jpg",
+    trainer: "Héctor Andrada",
+    schedule: "Sábados: 17:15"
   }
 ];
+
+// Función para determinar el color de la clase
+function getClassColor(className) {
+  switch (className) {
+    case "Musculación":
+      return "text-green-400";
+    case "Ritmo/Funcional":
+      return "text-pink-400";
+    case "Fit-dance":
+      return "text-purple-400";
+    case "Spinning/Funcional":
+      return "text-blue-400";
+    case "Step Coreográfico":
+      return "text-yellow-400";
+    case "X55 (Radical Fitness)":
+      return "text-orange-400";
+    default:
+      return "text-gray-400";
+  }
+}
 ---
 
 <section id="clases" class="py-20 bg-zinc-900">
   <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-4">NUESTRAS CLASES</h2>
-      <p class="text-xl text-gray-300 max-w-5xl mx-auto font-lato font-light">
+      <p class="text-xl text-gray-300 max-w-5xl mx-auto font-lato font-light normal-case">
         Ofrecemos una variedad de clases diseñadas para ayudarte a alcanzar tus objetivos fitness, sin importar tu nivel de experiencia.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {classes.map(item => (
-        <div class="bg-zinc-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
-          <div class="h-64 overflow-hidden">
-            <img 
-              src={item.image || "/placeholder.svg"} 
-              alt={`Clase de ${item.title}`} 
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-6">
-            <h3 class="text-2xl font-anton text-white mb-3">{item.title}</h3>
-            <p class="text-gray-300 font-lato normal-case">{item.description}</p>
-            <a 
-              href="#horarios" 
-              class="mt-4 inline-block text-yellow-400 font-medium hover:text-yellow-300"
-            >
-              Ver horarios →
-            </a>
-          </div>
+    <!-- Carrusel de clases con flechas de navegación -->
+    <div class="relative">
+      <!-- Flecha izquierda -->
+      <button 
+        id="prev-class" 
+        class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 md:-ml-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none"
+        aria-label="Clase anterior"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <!-- Contenedor del carrusel -->
+      <div class="overflow-hidden" id="classes-carousel">
+        <div class="flex transition-transform duration-500 ease-in-out" id="classes-slider">
+          {classes.map((classItem, index) => (
+            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4 class-slide">
+              <div class="bg-black border border-zinc-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 group h-full">
+                <div class="h-64 overflow-hidden relative">
+                  <img 
+                    src={classItem.image || `/placeholder.svg?height=600&width=400&query=fitness class ${classItem.title}`} 
+                    alt={`Clase de ${classItem.title}`} 
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+                  <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 class="text-3xl font-anton mb-1">{classItem.title}</h3>
+                    <p class={`${getClassColor(classItem.title)} font-lato mb-2`}>Instructor: {classItem.trainer}</p>
+                  </div>
+                </div>
+                <div class="p-6 bg-black">
+                  <p class="text-gray-300 font-lato normal-case mb-3">{classItem.description}</p>
+                  <div class="flex items-center text-sm text-gray-400 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="font-lato normal-case">{classItem.schedule}</span>
+                  </div>
+                  <a 
+                    href="#horarios" 
+                    class="inline-block text-yellow-400 font-medium hover:text-yellow-300 transition-colors duration-200"
+                  >
+                    Ver horarios completos →
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
+      </div>
+
+      <!-- Flecha derecha -->
+      <button 
+        id="next-class" 
+        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 md:-mr-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none"
+        aria-label="Siguiente clase"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Indicadores de paginación -->
+    <div class="flex justify-center mt-12 space-x-2" id="class-indicators">
+      {classes.map((_, index) => (
+        <button 
+          class={`w-4 h-4 rounded-full transition-colors duration-200 ${index === 0 ? 'bg-yellow-400' : 'bg-zinc-700 hover:bg-yellow-400/50'}`} 
+          aria-label={`Página ${index + 1}`}
+          data-index={index}
+        ></button>
       ))}
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Elementos del carrusel
+    const slider = document.getElementById('classes-slider') as HTMLElement;
+    const prevBtn = document.getElementById('prev-class') as HTMLButtonElement;
+    const nextBtn = document.getElementById('next-class') as HTMLButtonElement;
+    const indicators = document.querySelectorAll('#class-indicators button');
+    const slides = document.querySelectorAll('.class-slide');
+    
+    // Verificar que todos los elementos existan
+    if (!slider || !prevBtn || !nextBtn || indicators.length === 0 || slides.length === 0) {
+      console.error('No se encontraron todos los elementos necesarios para el carrusel');
+      return;
+    }
+    
+    let currentIndex = 0;
+    let slidesToShow = 1; // Por defecto en móvil
+    
+    // Determinar cuántos slides mostrar según el ancho de la pantalla
+    function updateSlidesToShow() {
+      if (window.innerWidth >= 1024) {
+        slidesToShow = 3; // Desktop
+      } else if (window.innerWidth >= 768) {
+        slidesToShow = 2; // Tablet
+      } else {
+        slidesToShow = 1; // Móvil
+      }
+      goToSlide(currentIndex); // Actualizar posición
+    }
+    
+    // Actualizar al cargar y al cambiar el tamaño de la ventana
+    updateSlidesToShow();
+    window.addEventListener('resize', updateSlidesToShow);
+    
+    // Función para ir a un slide específico
+    function goToSlide(index: number) {
+      // Asegurarse de que el índice esté dentro de los límites
+      const maxIndex = slides.length - slidesToShow;
+      if (index < 0) index = 0;
+      if (index > maxIndex) index = maxIndex;
+      
+      currentIndex = index;
+      
+      // Calcular el desplazamiento
+      const slideWidth = 100 / slidesToShow;
+      const offset = -index * slideWidth;
+      slider.style.transform = `translateX(${offset}%)`;
+      
+      // Actualizar indicadores
+      indicators.forEach((indicator, i) => {
+        if (i === currentIndex) {
+          indicator.classList.remove('bg-zinc-700', 'hover:bg-yellow-400/50');
+          indicator.classList.add('bg-yellow-400');
+        } else {
+          indicator.classList.remove('bg-yellow-400');
+          indicator.classList.add('bg-zinc-700', 'hover:bg-yellow-400/50');
+        }
+      });
+      
+      // Actualizar estado de los botones (usando setAttribute en lugar de .disabled)
+      if (index === 0) {
+        prevBtn.setAttribute('disabled', 'true');
+        prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        prevBtn.removeAttribute('disabled');
+        prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+      
+      if (index === maxIndex) {
+        nextBtn.setAttribute('disabled', 'true');
+        nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        nextBtn.removeAttribute('disabled');
+        nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+    }
+    
+    // Event listeners para los botones
+    prevBtn.addEventListener('click', () => {
+      goToSlide(currentIndex - 1);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      goToSlide(currentIndex + 1);
+    });
+    
+    // Event listeners para los indicadores
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        goToSlide(index);
+      });
+    });
+    
+    // Inicializar
+    goToSlide(0);
+  });
+</script>
+
+<style>
+  /* Estilos para el carrusel */
+  #classes-slider {
+    display: flex;
+    width: 100%;
+  }
+  
+  .class-slide {
+    flex: 0 0 100%; /* Móvil: 1 slide */
+  }
+  
+  @media (min-width: 768px) {
+    .class-slide {
+      flex: 0 0 50%; /* Tablet: 2 slides */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .class-slide {
+      flex: 0 0 33.333333%; /* Desktop: 3 slides */
+    }
+  }
+</style>

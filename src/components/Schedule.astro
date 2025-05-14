@@ -1,68 +1,94 @@
 ---
-const weekdays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+// Eliminamos el domingo de la lista de días
+const weekdays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
+// Definimos los horarios principales para la tabla
+const timeSlots = [
+  "7:30 - 19:00",
+  "8:00 - 9:00",
+  "19:00 - 22:00",
+  "20:00 - 21:00",
+  "21:00 - 22:00",
+  "16:00 - 17:00",
+  "17:15 - 18:15"
+];
+
+// Estructura de horarios por día (sin domingo)
 const schedule = [
   {
     day: "Lunes",
     classes: [
-      { time: "07:00 - 08:00", name: "Spinning", trainer: "Carlos" },
-      { time: "09:00 - 10:00", name: "Zumba", trainer: "Laura" },
-      { time: "18:00 - 19:00", name: "Pesas", trainer: "Miguel" },
-      { time: "20:00 - 21:00", name: "Zumba", trainer: "Laura" }
+      { time: "7:30 - 19:00", name: "Musculación", trainer: "Guillermo Flores" },
+      { time: "8:00 - 9:00", name: "Ritmo/Funcional", trainer: "Judith Domínguez" },
+      { time: "19:00 - 22:00", name: "Musculación", trainer: "Enrique Montes" },
+      { time: "20:00 - 21:00", name: "Spinning/Funcional", trainer: "Emanuel de la Torre" },
+      { time: "21:00 - 22:00", name: "Spinning/Funcional", trainer: "Emanuel de la Torre" }
     ]
   },
   {
     day: "Martes",
     classes: [
-      { time: "07:00 - 08:00", name: "Pesas", trainer: "Miguel" },
-      { time: "09:00 - 10:00", name: "Spinning", trainer: "Carlos" },
-      { time: "18:00 - 19:00", name: "Zumba", trainer: "Laura" },
-      { time: "20:00 - 21:00", name: "Spinning", trainer: "Carlos" }
+      { time: "7:30 - 19:00", name: "Musculación", trainer: "Guillermo Flores" },
+      { time: "19:00 - 22:00", name: "Musculación", trainer: "Enrique Montes" },
+      { time: "21:00 - 22:00", name: "Fit-dance", trainer: "Judith Domínguez" }
     ]
   },
   {
     day: "Miércoles",
     classes: [
-      { time: "07:00 - 08:00", name: "Zumba", trainer: "Laura" },
-      { time: "09:00 - 10:00", name: "Pesas", trainer: "Miguel" },
-      { time: "18:00 - 19:00", name: "Spinning", trainer: "Carlos" },
-      { time: "20:00 - 21:00", name: "Pesas", trainer: "Miguel" }
+      { time: "7:30 - 19:00", name: "Musculación", trainer: "Guillermo Flores" },
+      { time: "8:00 - 9:00", name: "Ritmo/Funcional", trainer: "Judith Domínguez" },
+      { time: "19:00 - 22:00", name: "Musculación", trainer: "Enrique Montes" },
+      { time: "20:00 - 21:00", name: "Spinning/Funcional", trainer: "Emanuel de la Torre" },
+      { time: "21:00 - 22:00", name: "Spinning/Funcional", trainer: "Emanuel de la Torre" }
     ]
   },
   {
     day: "Jueves",
     classes: [
-      { time: "07:00 - 08:00", name: "Spinning", trainer: "Carlos" },
-      { time: "09:00 - 10:00", name: "Zumba", trainer: "Laura" },
-      { time: "18:00 - 19:00", name: "Pesas", trainer: "Miguel" },
-      { time: "20:00 - 21:00", name: "Zumba", trainer: "Laura" }
+      { time: "7:30 - 19:00", name: "Musculación", trainer: "Guillermo Flores" },
+      { time: "19:00 - 22:00", name: "Musculación", trainer: "Enrique Montes" },
+      { time: "21:00 - 22:00", name: "Fit-dance", trainer: "Judith Domínguez" }
     ]
   },
   {
     day: "Viernes",
     classes: [
-      { time: "07:00 - 08:00", name: "Pesas", trainer: "Miguel" },
-      { time: "09:00 - 10:00", name: "Spinning", trainer: "Carlos" },
-      { time: "18:00 - 19:00", name: "Zumba", trainer: "Laura" },
-      { time: "20:00 - 21:00", name: "Spinning", trainer: "Carlos" }
+      { time: "7:30 - 19:00", name: "Musculación", trainer: "Guillermo Flores" },
+      { time: "8:00 - 9:00", name: "Ritmo/Funcional", trainer: "Judith Domínguez" },
+      { time: "19:00 - 22:00", name: "Musculación", trainer: "Enrique Montes" },
+      { time: "20:00 - 21:00", name: "Spinning/Funcional", trainer: "Emanuel de la Torre" },
+      { time: "21:00 - 22:00", name: "Spinning/Funcional", trainer: "Emanuel de la Torre" }
     ]
   },
   {
     day: "Sábado",
     classes: [
-      { time: "10:00 - 11:00", name: "Zumba", trainer: "Laura" },
-      { time: "12:00 - 13:00", name: "Spinning", trainer: "Carlos" },
-      { time: "16:00 - 17:00", name: "Pesas", trainer: "Miguel" }
-    ]
-  },
-  {
-    day: "Domingo",
-    classes: [
-      { time: "10:00 - 11:00", name: "Spinning", trainer: "Carlos" },
-      { time: "12:00 - 13:00", name: "Zumba", trainer: "Laura" }
+      { time: "16:00 - 17:00", name: "Step Coreográfico", trainer: "Héctor Andrada" },
+      { time: "17:15 - 18:15", name: "X55 (Radical Fitness)", trainer: "Héctor Andrada" }
     ]
   }
 ];
+
+// Función para determinar el color de la clase
+function getClassColor(className) {
+  switch (className) {
+    case "Musculación":
+      return "text-green-400";
+    case "Ritmo/Funcional":
+      return "text-pink-400";
+    case "Fit-dance":
+      return "text-purple-400";
+    case "Spinning/Funcional":
+      return "text-blue-400";
+    case "Step Coreográfico":
+      return "text-yellow-400";
+    case "X55 (Radical Fitness)":
+      return "text-orange-400";
+    default:
+      return "text-gray-400";
+  }
+}
 ---
 
 <section id="horarios" class="py-20 bg-black">
@@ -72,6 +98,34 @@ const schedule = [
       <p class="text-xl text-gray-300 max-w-5xl mx-auto font-lato font-light normal-case">
         Consulta nuestros horarios de clases y planifica tu semana fitness. Ofrecemos flexibilidad para adaptarnos a tu rutina diaria.
       </p>
+    </div>
+
+    <!-- Leyenda de colores -->
+    <div class="mb-8 flex flex-wrap justify-center gap-4">
+      <div class="flex items-center">
+        <span class="w-4 h-4 bg-green-400 rounded-full inline-block mr-2"></span>
+        <span class="text-white font-lato">Musculación</span>
+      </div>
+      <div class="flex items-center">
+        <span class="w-4 h-4 bg-pink-400 rounded-full inline-block mr-2"></span>
+        <span class="text-white font-lato">Ritmo/Funcional</span>
+      </div>
+      <div class="flex items-center">
+        <span class="w-4 h-4 bg-purple-400 rounded-full inline-block mr-2"></span>
+        <span class="text-white font-lato">Fit-dance</span>
+      </div>
+      <div class="flex items-center">
+        <span class="w-4 h-4 bg-blue-400 rounded-full inline-block mr-2"></span>
+        <span class="text-white font-lato">Spinning/Funcional</span>
+      </div>
+      <div class="flex items-center">
+        <span class="w-4 h-4 bg-yellow-400 rounded-full inline-block mr-2"></span>
+        <span class="text-white font-lato">Step Coreográfico</span>
+      </div>
+      <div class="flex items-center">
+        <span class="w-4 h-4 bg-orange-400 rounded-full inline-block mr-2"></span>
+        <span class="text-white font-lato">X55 (Radical Fitness)</span>
+      </div>
     </div>
 
     <!-- Desktop Schedule -->
@@ -91,26 +145,26 @@ const schedule = [
             </tr>
           </thead>
           <tbody class="divide-y divide-zinc-700 font-lato">
-            {["07:00 - 08:00", "09:00 - 10:00", "10:00 - 11:00", "12:00 - 13:00", "16:00 - 17:00", "18:00 - 19:00", "20:00 - 21:00"].map(timeSlot => (
+            {timeSlots.map(timeSlot => (
               <tr>
                 <td class="py-4 px-6 text-sm font-medium text-white">{timeSlot}</td>
                 {weekdays.map(day => {
                   const daySchedule = schedule.find(s => s.day === day);
-                  const classInfo = daySchedule?.classes.find(c => c.time === timeSlot);
+                  const classInfos = daySchedule?.classes.filter(c => c.time === timeSlot) || [];
                   
                   return (
                     <td class="py-4 px-6 text-sm text-gray-300">
-                      {classInfo ? (
+                      {classInfos.length > 0 ? (
                         <div>
-                          <span class={`font-medium ${
-                            classInfo.name === "Zumba" ? "text-pink-400" : 
-                            classInfo.name === "Spinning" ? "text-blue-400" : 
-                            "text-green-400"
-                          }`}>
-                            {classInfo.name}
-                          </span>
-                          <br />
-                          <span class="text-xs text-gray-400 normal-case">Instructor: {classInfo.trainer}</span>
+                          {classInfos.map((classInfo, idx) => (
+                            <div class={idx > 0 ? "mt-2 pt-2 border-t border-zinc-700" : ""}>
+                              <span class={`font-medium ${getClassColor(classInfo.name)}`}>
+                                {classInfo.name}
+                              </span>
+                              <br />
+                              <span class="text-xs text-gray-400 normal-case">Instructor: {classInfo.trainer}</span>
+                            </div>
+                          ))}
                         </div>
                       ) : ""}
                     </td>
@@ -150,11 +204,7 @@ const schedule = [
                   <li class="border-b border-zinc-700 pb-2">
                     <div class="flex justify-between">
                       <span class="text-white">{classInfo.time}</span>
-                      <span class={`font-medium ${
-                        classInfo.name === "Zumba" ? "text-pink-400" : 
-                        classInfo.name === "Spinning" ? "text-blue-400" : 
-                        "text-green-400"
-                      }`}>
+                      <span class={`font-medium ${getClassColor(classInfo.name)}`}>
                         {classInfo.name}
                       </span>
                     </div>
@@ -168,6 +218,16 @@ const schedule = [
           </div>
         </div>
       ))}
+    </div>
+
+    <!-- Notas adicionales -->
+    <div class="mt-8 text-center">
+      <p class="text-gray-300 font-lato italic normal-case">
+        * Los horarios pueden estar sujetos a cambios. Te recomendamos confirmar antes de tu visita.
+      </p>
+      <p class="text-gray-300 font-lato italic normal-case mt-2">
+        * Domingo: Cerrado
+      </p>
     </div>
   </div>
 </section>
