@@ -91,7 +91,7 @@ function getClassColor(className) {
 }
 ---
 
-<section id="horarios" class="py-20 bg-black">
+<section id="horarios" class="py-20 bg-black animate-on-scroll">
   <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-4">HORARIOS</h2>
@@ -102,27 +102,27 @@ function getClassColor(className) {
 
     <!-- Leyenda de colores -->
     <div class="mb-8 flex flex-wrap justify-center gap-4">
-      <div class="flex items-center">
+      <div class="flex items-center feature-icon">
         <span class="w-4 h-4 bg-green-400 rounded-full inline-block mr-2"></span>
         <span class="text-white font-lato">Musculación</span>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center feature-icon">
         <span class="w-4 h-4 bg-pink-400 rounded-full inline-block mr-2"></span>
         <span class="text-white font-lato">Ritmo/Funcional</span>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center feature-icon">
         <span class="w-4 h-4 bg-purple-400 rounded-full inline-block mr-2"></span>
         <span class="text-white font-lato">Fit-dance</span>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center feature-icon">
         <span class="w-4 h-4 bg-blue-400 rounded-full inline-block mr-2"></span>
         <span class="text-white font-lato">Spinning/Funcional</span>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center feature-icon">
         <span class="w-4 h-4 bg-yellow-400 rounded-full inline-block mr-2"></span>
         <span class="text-white font-lato">Step Coreográfico</span>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center feature-icon">
         <span class="w-4 h-4 bg-orange-400 rounded-full inline-block mr-2"></span>
         <span class="text-white font-lato">X55 (Radical Fitness)</span>
       </div>
@@ -234,19 +234,21 @@ function getClassColor(className) {
 
 <script>
   // Mobile accordion functionality
-  document.querySelectorAll('[id^="day-button-"]').forEach((button, index) => {
-    button.addEventListener('click', () => {
-      const content = document.getElementById(`day-content-${index}`);
-      const icon = button.querySelector('svg');
-      
-      if (content && icon) {
-        content.classList.toggle('hidden');
-        icon.classList.toggle('rotate-180');
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[id^="day-button-"]').forEach((button, index) => {
+      button.addEventListener('click', () => {
+        const content = document.getElementById(`day-content-${index}`);
+        const icon = button.querySelector('svg');
         
-        // Update aria-expanded
-        const isExpanded = content.classList.contains('hidden') ? 'false' : 'true';
-        button.setAttribute('aria-expanded', isExpanded);
-      }
+        if (content && icon) {
+          content.classList.toggle('hidden');
+          icon.classList.toggle('rotate-180');
+          
+          // Update aria-expanded
+          const isExpanded = content.classList.contains('hidden') ? 'false' : 'true';
+          button.setAttribute('aria-expanded', isExpanded);
+        }
+      });
     });
   });
 </script>

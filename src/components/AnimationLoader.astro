@@ -1,0 +1,440 @@
+---
+---
+<script is:inline>
+  // Verificar si GSAP ya está cargado
+  if (typeof gsap === 'undefined') {
+    // Cargar GSAP desde CDN si no está disponible
+    const loadScript = (src) => {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    };
+
+    // Cargar GSAP y plugins
+    Promise.all([
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'),
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js')
+    ]).then(() => {
+      console.log('GSAP cargado desde CDN');
+      // Iniciar animaciones después de cargar GSAP
+      setTimeout(initAnimations, 100);
+    }).catch(err => {
+      console.error('Error al cargar GSAP:', err);
+    });
+  } else {
+    // Si GSAP ya está disponible, iniciar animaciones
+    setTimeout(initAnimations, 100);
+  }
+
+  function initAnimations() {
+    console.log('Inicializando animaciones GSAP');
+    
+    // Registrar plugins
+    if (typeof gsap !== 'undefined' && gsap.registerPlugin && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      console.log('ScrollTrigger registrado correctamente');
+    } else {
+      console.warn('No se pudo registrar ScrollTrigger, puede que no esté disponible');
+      return; // Salir si no podemos registrar ScrollTrigger
+    }
+    
+  
+    
+    // Animación del hero
+    const heroTl = gsap.timeline({
+      delay: 0.2
+    });
+    
+    // Badge aparece primero
+    heroTl.from('.gsap-hero-badge', {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      ease: 'back.out(1.7)'
+    });
+    
+    // Título aparece con efecto de split
+    heroTl.from('.gsap-hero-title', {
+      opacity: 0,
+      y: 30,
+      duration: 1,
+      ease: 'power3.out'
+    }, '-=0.4');
+    
+    // Texto aparece
+    heroTl.from('.gsap-hero-text', {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      ease: 'power2.out'
+    }, '-=0.6');
+    
+    // Botón aparece
+    heroTl.from('.gsap-hero-button', {
+      opacity: 0,
+      y: 20,
+      scale: 0.9,
+      duration: 0.8,
+      ease: 'back.out(1.7)'
+    }, '-=0.4');
+    
+    // Flecha aparece con rebote
+    heroTl.from('.gsap-hero-arrow', {
+      opacity: 0,
+      y: -20,
+      duration: 0.8,
+      ease: 'bounce.out'
+    }, '-=0.2');
+    
+    // Animación del botón de WhatsApp
+    gsap.to('.gsap-whatsapp', {
+      opacity: 1,
+      scale: 1,
+      duration: 1,
+      ease: 'elastic.out(1, 0.5)',
+      delay: 1.5
+    });
+    
+    // Animaciones al hacer scroll
+    
+    // Animación para secciones al hacer scroll (excluyendo la sección de planes)
+    const sections = document.querySelectorAll("section:not(#top):not(#planes)");
+    sections.forEach(section => {
+      gsap.from(section.querySelectorAll("h2,h1,h3,span, p, .grid > *"), {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          once: true // Importante: solo se ejecuta una vez
+        },
+        opacity: 0,
+        y: 30,
+        stagger: 0.2,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+    });
+    
+
+    // Animaciones específicas para la sección de planes
+    const planesSection = document.getElementById('planes');
+    if (planesSection) {
+      // Animación para el título y descripción
+      gsap.from(planesSection.querySelectorAll("h2,h1,h3,span, p.text-center"), {
+        scrollTrigger: {
+          trigger: planesSection,
+          start: "top 80%",
+          once: true // Importante: solo se ejecuta una vez
+        },
+        opacity: 0,
+        y: 30,
+        stagger: 0.2,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+      
+      // Animación para las tarjetas de planes
+      const planCards = planesSection.querySelectorAll(".plan-card");
+      if (planCards.length > 0) {
+        console.log("Inicializando animaciones para", planCards.length, "tarjetas de planes");
+        
+        // Asegurarse de que las tarjetas sean visibles inicialmente
+        gsap.set(planCards, { opacity: 1 });
+        
+        // Animación de entrada
+        gsap.fromTo(planCards, 
+          { y: 50, opacity: 0, scale: 0.95 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              trigger: planesSection,
+              start: "top 70%",
+              once: true // Importante: solo se ejecuta una vez
+            }
+          }
+        );
+        
+        // Animación para la etiqueta "Popular"
+        const popularBadge = planesSection.querySelector('.popular-badge');
+        if (popularBadge) {
+          gsap.fromTo(popularBadge,
+            { scale: 0, rotation: -15, opacity: 0 },
+            {
+              scale: 1,
+              rotation: 0,
+              opacity: 1,
+              duration: 0.6,
+              delay: 0.6, // Retrasar para que aparezca después de las tarjetas
+              ease: "elastic.out(1.2, 0.5)",
+              scrollTrigger: {
+                trigger: planesSection,
+                start: "top 70%",
+                once: true
+              }
+            }
+          );
+        }
+        
+        // Configurar animaciones de hover para las tarjetas - Versión mejorada
+        planCards.forEach(card => {
+          // Crear una variable para rastrear si la animación está en curso
+          let isAnimating = false;
+          
+          card.addEventListener('mouseenter', function() {
+            if (isAnimating) return; // Evitar múltiples animaciones simultáneas
+            isAnimating = true;
+            
+            gsap.to(this, {
+              y: -10,
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              duration: 0.2, // Duración más corta para respuesta más rápida
+              ease: "power1.out", // Ease más simple para mejor rendimiento
+              onComplete: () => { isAnimating = false; }
+            });
+          });
+          
+          card.addEventListener('mouseleave', function() {
+            if (isAnimating) return; // Evitar múltiples animaciones simultáneas
+            isAnimating = true;
+            
+            gsap.to(this, {
+              y: 0,
+              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+              duration: 0.2, // Duración más corta para respuesta más rápida
+              ease: "power1.out", // Ease más simple para mejor rendimiento
+              onComplete: () => { isAnimating = false; }
+            });
+          });
+        });
+      }
+    }
+    // Animación para los botones en las tarjetas
+const animateButtons = () => {
+  // Seleccionar todos los botones en las tarjetas de clases
+  const classButtons = document.querySelectorAll('.class-slide a, .service-card a');
+  if (classButtons.length > 0) {
+    gsap.from(classButtons, {
+      scrollTrigger: {
+        trigger: '.class-slide, .service-card',
+        start: "top 80%",
+        once: true
+      },
+      opacity: 0,
+      y: 10,
+      scale: 0.95,
+      stagger: 0.1,
+      duration: 0.6,
+      ease: "back.out(1.7)",
+      delay: 0.5
+    });
+    
+    // Añadir efecto hover a los botones
+    classButtons.forEach(button => {
+      button.addEventListener('mouseenter', function() {
+        gsap.to(this, {
+          backgroundColor: '#FFE14D',
+          color: '#000',
+          duration: 0.3,
+          ease: "power1.out"
+        });
+      });
+      
+      button.addEventListener('mouseleave', function() {
+        gsap.to(this, {
+          backgroundColor: '',
+          color: '',
+          duration: 0.3,
+          ease: "power1.out"
+        });
+      });
+    });
+  }
+  
+  // Seleccionar todos los botones en la sección de contacto
+  const contactButtons = document.querySelectorAll('#contacto button, #contacto a.inline-flex, #hero button');
+  if (contactButtons.length > 0) {
+    gsap.from(contactButtons, {
+      scrollTrigger: {
+        trigger: '#contacto form, #contacto .flex.items-start',
+        start: "top 80%",
+        once: true
+      },
+      opacity: 0,
+      y: 15,
+      scale: 0.9,
+      stagger: 0.2,
+      duration: 0.7,
+      ease: "elastic.out(1, 0.5)",
+      delay: 0.7
+    });
+  }
+};
+// Animación específica para los botones del hero
+const heroButtons = document.querySelectorAll('#hero a, section:first-of-type a.bg-white, section:first-of-type a.bg-gradient-to-r');
+if (heroButtons.length > 0) {
+  console.log('Encontrados botones del hero:', heroButtons.length);
+  
+  // Eliminar cualquier animación previa que pueda estar afectando a estos botones
+  gsap.killTweensOf(heroButtons);
+  
+  // Aplicar nueva animación
+  gsap.fromTo(heroButtons, 
+    { opacity: 0, y: 20, scale: 0.9 },
+    {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "back.out(1.7)",
+      delay: 0.8,
+      clearProps: "all" // Esto asegura que no interfiera con otras propiedades CSS
+    }
+  );
+  
+  // Añadir efecto hover sin el efecto de escala/pulso
+  heroButtons.forEach(button => {
+    button.addEventListener('mouseenter', function() {
+      gsap.to(this, {
+        backgroundColor: this.classList.contains('bg-white') ? '#f3f3f3' : '',
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+        duration: 0.3,
+        ease: "power1.out"
+      });
+    });
+    
+    button.addEventListener('mouseleave', function() {
+      gsap.to(this, {
+        backgroundColor: '',
+        boxShadow: '',
+        duration: 0.3,
+        ease: "power1.out"
+      });
+    });
+  });
+}
+
+// Animación específica para la tabla de horarios (schedule)
+const scheduleSection = document.getElementById('horarios');
+if (scheduleSection) {
+  console.log('Inicializando animaciones para la tabla de horarios');
+  
+  // Animación para la tabla en desktop
+  const scheduleTable = scheduleSection.querySelector('table');
+  if (scheduleTable) {
+    // Animar el encabezado de la tabla
+    gsap.from(scheduleTable.querySelectorAll('thead th'), {
+      scrollTrigger: {
+        trigger: scheduleTable,
+        start: "top 80%",
+        once: true
+      },
+      opacity: 0,
+      y: -20,
+      stagger: 0.1,
+      duration: 0.5,
+      ease: "power2.out",
+      delay: 0.2
+    });
+    
+    // Animar las filas de la tabla con efecto cascada
+    gsap.from(scheduleTable.querySelectorAll('tbody tr'), {
+      scrollTrigger: {
+        trigger: scheduleTable,
+        start: "top 80%",
+        once: true
+      },
+      opacity: 0,
+      y: 20,
+      stagger: 0.1,
+      duration: 0.6,
+      ease: "power2.out",
+      delay: 0.5
+    });
+    
+    // Animar las celdas con clases (con colores)
+    const coloredCells = scheduleTable.querySelectorAll('td span[class*="text-"]');
+    if (coloredCells.length > 0) {
+      gsap.from(coloredCells, {
+        scrollTrigger: {
+          trigger: scheduleTable,
+          start: "top 80%",
+          once: true
+        },
+        opacity: 0,
+        scale: 0.8,
+        stagger: 0.03,
+        duration: 0.4,
+        ease: "back.out(1.7)",
+        delay: 0.8
+      });
+    }
+  }
+  
+  // Animación para el acordeón móvil
+  const mobileAccordion = scheduleSection.querySelectorAll('.lg\\:hidden [id^="day-button-"]');
+  if (mobileAccordion.length > 0) {
+    gsap.from(mobileAccordion, {
+      scrollTrigger: {
+        trigger: scheduleSection.querySelector('.lg\\:hidden'),
+        start: "top 80%",
+        once: true
+      },
+      opacity: 0,
+      y: 15,
+      stagger: 0.1,
+      duration: 0.5,
+      ease: "power2.out",
+      delay: 0.3
+    });
+    
+    // Añadir efecto de expansión para el contenido del acordeón
+    document.querySelectorAll('[id^="day-button-"]').forEach((button, index) => {
+      const originalClick = button.onclick;
+      
+      button.onclick = function(e) {
+        // Llamar al handler original primero
+        if (originalClick) {
+          originalClick.call(this, e);
+        }
+        
+        // Obtener el contenido asociado
+        const content = document.getElementById(`day-content-${index}`);
+        if (content && !content.classList.contains('hidden')) {
+          // Si el contenido está visible, animarlo
+          gsap.fromTo(content.querySelectorAll('li'),
+            { opacity: 0, y: 10 },
+            { 
+              opacity: 1, 
+              y: 0, 
+              stagger: 0.05, 
+              duration: 0.4,
+              ease: "power1.out"
+            }
+          );
+        }
+      };
+    });
+  }
+}
+// Llamar a la función de animación de botones después de inicializar las animaciones principales
+animateButtons();
+    console.log('Animaciones GSAP inicializadas');
+  }
+  
+  // Crear un evento personalizado para el cambio de tema
+  if (typeof window !== 'undefined') {
+    window.dispatchThemeChange = function() {
+      document.dispatchEvent(new CustomEvent('themeChanged'));
+    };
+  }
+</script>

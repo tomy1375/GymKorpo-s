@@ -18,7 +18,7 @@ const classes = [
   {
     title: "Fit-dance",
     description: "Baila y quema calorías con esta divertida clase que combina coreografías de diferentes estilos de baile con ejercicios de tonificación.",
-    image: "/class1.jpg",
+    image: "/placeholder.svg?height=600&width=400&query=fit dance class with energetic instructor",
     trainer: "Judith Domínguez",
     schedule: "Martes y Jueves: 21:00"
   },
@@ -32,14 +32,14 @@ const classes = [
   {
     title: "Step Coreográfico",
     description: "Mejora tu coordinación y resistencia cardiovascular con rutinas coreografiadas sobre steps, perfectas para tonificar piernas y glúteos.",
-    image: "/class2.jpg",
+    image: "/placeholder.svg?height=600&width=400&query=step choreographic class in gym",
     trainer: "Héctor Andrada",
     schedule: "Sábados: 16:00"
   },
   {
     title: "X55 (Radical Fitness)",
     description: "Experimenta este programa de entrenamiento de alta intensidad que combina ejercicios funcionales, aeróbicos y de fuerza en sesiones de 55 minutos.",
-    image: "/class2.jpg",
+    image: "/placeholder.svg?height=600&width=400&query=radical fitness x55 training class",
     trainer: "Héctor Andrada",
     schedule: "Sábados: 17:15"
   }
@@ -66,7 +66,7 @@ function getClassColor(className) {
 }
 ---
 
-<section id="clases" class="py-20 bg-zinc-900">
+<section id="clases" class="py-20 bg-zinc-900 animate-on-scroll">
   <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-4xl md:text-5xl font-anton text-yellow-400 mb-4">NUESTRAS CLASES</h2>
@@ -80,7 +80,7 @@ function getClassColor(className) {
       <!-- Flecha izquierda -->
       <button 
         id="prev-class" 
-        class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 md:-ml-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none"
+        class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 md:-ml-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none feature-icon"
         aria-label="Clase anterior"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -92,7 +92,7 @@ function getClassColor(className) {
       <div class="overflow-hidden" id="classes-carousel">
         <div class="flex transition-transform duration-500 ease-in-out" id="classes-slider">
           {classes.map((classItem, index) => (
-            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4 class-slide">
+            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4 class-slide service-card">
               <div class="bg-black border border-zinc-800 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 group h-full">
                 <div class="h-64 overflow-hidden relative">
                   <img 
@@ -130,7 +130,7 @@ function getClassColor(className) {
       <!-- Flecha derecha -->
       <button 
         id="next-class" 
-        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 md:-mr-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none"
+        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 md:-mr-6 z-10 bg-black/70 hover:bg-yellow-400 text-white hover:text-black w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none feature-icon"
         aria-label="Siguiente clase"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

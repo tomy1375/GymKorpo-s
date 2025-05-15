@@ -12,7 +12,7 @@ const whatsappMessage = "Hola! Me interesa la prueba gratis del gimnasio.";
 const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 ---
 
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
   <!-- Video Background -->
   <div class="absolute inset-0 z-0 bg-black">
     <video 
@@ -25,7 +25,7 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       id="background-video"
     >
       <!-- Corregir la ruta del video: en Astro, los archivos en /public se sirven desde la raíz -->
-      <source src="/gym1.mp4" type="video/mp4">
+      <source src="/gymv2.mp4" type="video/mp4">
       <!-- Fallback para navegadores que no soportan video -->
       <img 
         src="/images/gym-background.png" 
