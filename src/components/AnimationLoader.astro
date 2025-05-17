@@ -105,7 +105,7 @@
     // Animación para secciones al hacer scroll (excluyendo la sección de planes)
     const sections = document.querySelectorAll("section:not(#top):not(#planes)");
     sections.forEach(section => {
-      gsap.from(section.querySelectorAll("h2,h1,h3,span, p, .grid > *"), {
+      gsap.from(section.querySelectorAll("h2,h1,h3, p, .grid > *"), {
         scrollTrigger: {
           trigger: section,
           start: "top 80%",
@@ -124,7 +124,7 @@
     const planesSection = document.getElementById('planes');
     if (planesSection) {
       // Animación para el título y descripción
-      gsap.from(planesSection.querySelectorAll("h2,h1,h3,span, p.text-center"), {
+      gsap.from(planesSection.querySelectorAll("h2,h1,h3, p.text-center"), {
         scrollTrigger: {
           trigger: planesSection,
           start: "top 80%",
@@ -332,7 +332,7 @@ if (scheduleSection) {
   const scheduleTable = scheduleSection.querySelector('table');
   if (scheduleTable) {
     // Animar el encabezado de la tabla
-    gsap.from(scheduleTable.querySelectorAll('thead th'), {
+    gsap.from(scheduleTable.querySelectorAll('thead th, span'), {
       scrollTrigger: {
         trigger: scheduleTable,
         start: "top 80%",
@@ -362,22 +362,25 @@ if (scheduleSection) {
     });
     
     // Animar las celdas con clases (con colores)
-    const coloredCells = scheduleTable.querySelectorAll('td span[class*="text-"]');
-    if (coloredCells.length > 0) {
-      gsap.from(coloredCells, {
-        scrollTrigger: {
-          trigger: scheduleTable,
-          start: "top 80%",
-          once: true
-        },
-        opacity: 0,
-        scale: 0.8,
-        stagger: 0.03,
-        duration: 0.4,
-        ease: "back.out(1.7)",
-        delay: 0.8
-      });
-    }
+   // Animar las celdas con clases (con colores)
+const coloredCells = scheduleTable.querySelectorAll('td[class*="text-"]');
+if (coloredCells.length > 0) {
+  // Hacer visibles inmediatamente
+  gsap.set(coloredCells, { opacity: 1 });
+  
+  // Animación muy sutil y rápida para todos a la vez (sin stagger)
+  gsap.from(coloredCells, {
+    scrollTrigger: {
+      trigger: scheduleTable,
+      start: "top 90%",
+      once: true
+    },
+    scale: 0.95,
+    duration: 0.2,
+    ease: "power1.out",
+    delay: 0.1
+  });
+}
   }
   
   // Animación para el acordeón móvil

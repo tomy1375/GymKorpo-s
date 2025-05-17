@@ -21,18 +21,30 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       loop 
       playsinline
       preload="auto"
-      class="w-full h-full object-cover brightness-50"
-      id="background-video"
+      class="w-full h-full object-cover brightness-50 hidden md:block"
+      id="desktop-video"
     >
-      <!-- Corregir la ruta del video: en Astro, los archivos en /public se sirven desde la raíz -->
       <source src="/gymv2.mp4" type="video/mp4">
-      <!-- Fallback para navegadores que no soportan video -->
-      <img 
-        src="/images/gym-background.png" 
-        alt="Interior del gimnasio con equipamiento colorido" 
-        class="w-full h-full object-cover brightness-50"
-      />
     </video>
+    
+    <video 
+      autoplay 
+      muted 
+      loop 
+      playsinline
+      preload="auto"
+      class="w-full h-full object-cover brightness-50 block md:hidden"
+      id="mobile-video"
+    >
+      <source src="/gym2.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Fallback para navegadores que no soportan video -->
+    <img 
+      src="/images/gym-background.png" 
+      alt="Interior del gimnasio con equipamiento colorido" 
+      class="w-full h-full object-cover brightness-50 hidden video-fallback"
+    />
   </div>
 
   <!-- Content Container -->
@@ -79,31 +91,53 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
 </section>
 
 <script>
-  // Mejorar la reproducción en bucle del video para evitar parpadeos
   document.addEventListener('DOMContentLoaded', function() {
-    const videoElement = document.getElementById('background-video');
+    // Obtener referencias a los elementos de video
+    const desktopVideoEl = document.getElementById('desktop-video');
+    const mobileVideoEl = document.getElementById('mobile-video');
+    const fallbackImage = document.querySelector('.video-fallback');
     
-    if (videoElement && videoElement instanceof HTMLVideoElement) {
-      const video = videoElement as HTMLVideoElement;
+    // Verificar y convertir a HTMLVideoElement
+    const desktopVideo = desktopVideoEl instanceof HTMLVideoElement ? desktopVideoEl : null;
+    const mobileVideo = mobileVideoEl instanceof HTMLVideoElement ? mobileVideoEl : null;
+    
+    // Función para manejar la reproducción de video
+    function setupVideo(video) {
+      if (!video) return;
       
       // Precarga completa del video
       video.preload = 'auto';
       
-      // Función para intentar reproducir el video
-      function playVideo() {
+      // Intentar reproducir el video
+      try {
         const playPromise = video.play();
         
         if (playPromise !== undefined) {
           playPromise.catch(error => {
+            console.log('Error al reproducir el video:', error);
+            
+            // Mostrar la imagen de fallback si hay error
+            if (fallbackImage) {
+              fallbackImage.classList.remove('hidden');
+            }
+            
+            // Intentar reproducir al hacer clic
             document.addEventListener('click', function() {
-              video.play();
+              if (video) {
+                video.play().then(() => {
+                  if (fallbackImage) {
+                    fallbackImage.classList.add('hidden');
+                  }
+                }).catch(e => {
+                  console.log('No se pudo reproducir el video:', e);
+                });
+              }
             }, { once: true });
           });
         }
+      } catch (e) {
+        console.error('Error al intentar reproducir el video:', e);
       }
-      
-      // Intentar reproducir el video inmediatamente
-      playVideo();
       
       // Manejar la transición suave entre repeticiones
       video.addEventListener('timeupdate', function() {
@@ -125,6 +159,33 @@ const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
         }
       });
     }
+    
+    // Configurar ambos videos
+    setupVideo(desktopVideo);
+    setupVideo(mobileVideo);
+    
+    // Manejar cambios de tamaño de ventana
+    window.addEventListener('resize', function() {
+      const isMobile = window.innerWidth < 768; // 768px es el breakpoint de Tailwind para md
+      
+      if (isMobile && mobileVideo) {
+        if (mobileVideo.paused) {
+          try {
+            mobileVideo.play().catch(e => console.log('Error al reproducir video móvil:', e));
+          } catch (e) {
+            console.error('Error al intentar reproducir el video móvil:', e);
+          }
+        }
+      } else if (!isMobile && desktopVideo) {
+        if (desktopVideo.paused) {
+          try {
+            desktopVideo.play().catch(e => console.log('Error al reproducir video desktop:', e));
+          } catch (e) {
+            console.error('Error al intentar reproducir el video desktop:', e);
+          }
+        }
+      }
+    });
   });
 </script>
 
