@@ -37,62 +37,187 @@ const navItems = [
       <div class="md:hidden flex items-center">
         <button 
           type="button" 
-          class="text-white" 
+          class="text-white z-[9999] relative" 
           id="mobile-menu-button"
           aria-label="Abrir menú"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <div class="w-8 h-8 flex items-center justify-center">
+            <span class="hamburger-line hamburger-line-1"></span>
+            <span class="hamburger-line hamburger-line-2"></span>
+            <span class="hamburger-line hamburger-line-3"></span>
+          </div>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Mobile Menu -->
-  <div class="md:hidden hidden bg-black/95 w-full" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      {navItems.map(item => (
+  <!-- Mobile Menu - Pantalla completa -->
+  <div 
+    class="md:hidden fixed inset-0 bg-black bg-opacity-95 z-[9998] flex items-center justify-center transform translate-y-full transition-transform duration-500 ease-in-out" 
+    id="mobile-menu"
+    style="height: 100vh; position: fixed; top: 0; left: 0; right: 0; bottom: 0;"
+  >
+    <nav class="flex flex-col items-center justify-center w-full h-full">
+      {navItems.map((item, index) => (
         <a 
           href={item.href} 
-          class="block px-3 py-2 text-white hover:text-yellow-400 font-anton text-xl tracking-wider"
+          class="mobile-nav-item py-4 px-6 text-white hover:text-yellow-400 font-anton text-3xl tracking-wider opacity-0 transform translate-y-8"
+          style={`transition-delay: ${index * 0.1}s;`}
         >
           {item.name}
         </a>
       ))}
-    </div>
+    </nav>
   </div>
 </header>
 
-<script>
-  // Mobile menu toggle
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-
-  if (mobileMenuButton && mobileMenu) {
-    mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-
-    // Close menu when clicking on a link
-    const mobileLinks = mobileMenu.querySelectorAll('a');
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-      });
-    });
+<style>
+  /* Estilos para el botón de hamburguesa */
+  .hamburger-line {
+    @apply absolute w-6 h-0.5 bg-white transition-all duration-300 ease-in-out;
   }
-
-  // Navbar scroll effect
-  const navbar = document.getElementById('navbar');
   
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('bg-black/80', 'backdrop-blur-sm');
-      } else {
-        navbar.classList.remove('bg-black/80', 'backdrop-blur-sm');
-      }
-    });
+  .hamburger-line-1 {
+    transform: translateY(-8px);
   }
+  
+  .hamburger-line-3 {
+    transform: translateY(8px);
+  }
+  
+  /* Estilos para el botón activo (X) */
+  .menu-open .hamburger-line-1 {
+    transform: rotate(45deg);
+  }
+  
+  .menu-open .hamburger-line-2 {
+    opacity: 0;
+  }
+  
+  .menu-open .hamburger-line-3 {
+    transform: rotate(-45deg);
+  }
+  
+  /* Estilos para los elementos del menú móvil */
+  .mobile-nav-item {
+    transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease;
+  }
+  
+  /* Clase para cuando el menú está abierto */
+  .menu-visible {
+    transform: translateY(0) !important;
+  }
+  
+  /* Clase para cuando los elementos del menú son visibles */
+  .item-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  
+  /* Prevenir scroll cuando el menú está abierto */
+  .no-scroll {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Asegurar que el menú móvil siempre cubra toda la pantalla */
+  #mobile-menu {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+    
+    if (mobileMenuButton && mobileMenu) {
+      let menuOpen = false;
+      
+      mobileMenuButton.addEventListener('click', () => {
+        menuOpen = !menuOpen;
+        
+        // Cambiar el estado del botón
+        mobileMenuButton.classList.toggle('menu-open', menuOpen);
+        
+        // Mostrar/ocultar el menú con animación
+        if (menuOpen) {
+          // Abrir menú
+          mobileMenu.classList.add('menu-visible');
+          document.body.classList.add('no-scroll');
+          document.documentElement.classList.add('no-scroll'); // También aplicar al html
+          
+          // Animar elementos con un pequeño retraso
+          setTimeout(() => {
+            mobileNavItems.forEach(item => {
+              item.classList.add('item-visible');
+            });
+          }, 300);
+        } else {
+          // Ocultar elementos primero
+          mobileNavItems.forEach(item => {
+            item.classList.remove('item-visible');
+          });
+          
+          // Luego cerrar el menú después de un retraso
+          setTimeout(() => {
+            mobileMenu.classList.remove('menu-visible');
+            document.body.classList.remove('no-scroll');
+            document.documentElement.classList.remove('no-scroll');
+          }, 300);
+        }
+      });
+      
+      // Cerrar menú cuando se hace clic en un enlace
+      mobileNavItems.forEach(link => {
+        link.addEventListener('click', () => {
+          // Ocultar elementos primero
+          mobileNavItems.forEach(item => {
+            item.classList.remove('item-visible');
+          });
+          
+          // Cambiar el estado del botón
+          mobileMenuButton.classList.remove('menu-open');
+          menuOpen = false;
+          
+          // Luego cerrar el menú después de un retraso
+          setTimeout(() => {
+            mobileMenu.classList.remove('menu-visible');
+            document.body.classList.remove('no-scroll');
+            document.documentElement.classList.remove('no-scroll');
+          }, 300);
+        });
+      });
+    }
+    
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    
+    if (navbar) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add('bg-black/80', 'backdrop-blur-sm');
+        } else {
+          navbar.classList.remove('bg-black/80', 'backdrop-blur-sm');
+        }
+      });
+    }
+    
+    // Inicializar el estado del menú
+    if (mobileMenu) {
+      // Asegurarse de que el menú esté oculto al cargar
+      mobileMenu.classList.remove('menu-visible');
+    }
+  });
 </script>
